@@ -1,50 +1,411 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Personal EMR</title>
+
 <style>
-body{font-family:Arial;margin:0;background:#eef}header{background:#1565c0;color:#fff;padding:12px}
-.container{max-width:1100px;margin:auto;padding:16px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px}
-.card{background:#fff;border-radius:10px;padding:14px;box-shadow:0 2px 6px #0002}
-.dark{background:#111;color:#eee}.dark .card{background:#222}.btn{padding:8px}
-input,textarea,select{width:100%;padding:6px}
-</style></head><body>
-<header><div class="container"><h2 id=t>Personal EMR</h2>
-<select id=lang onchange="setLang(this.value)"><option>en</option><option>zh</option><option>es</option><option>fr</option><option>de</option><option>ja</option><option>ko</option><option>pt</option></select>
-<button class=btn onclick="document.body.classList.toggle('dark')">🌙</button></div></header>
-<div class=container><div class=grid>
-<div class=card><h3 id=p>Patient Profile</h3>
-<label>Name<input id=name value="Joseph Eng"></label>
-<label>DOB<input id=dob value="2009-07-10"></label>
-<label>Age<input id=age value="17"></label>
-<label>Gender<input id=gender value="Male"></label>
-<label>Allergies<input id=allergy value="None"></label>
-<label>Blood Type<input id=blood placeholder="O+"></label>
-<label>Height<input id=height placeholder="cm"></label>
-<label>Weight<input id=weight placeholder="kg"></label>
-<button onclick="save()">Save</button></div>
-<div class=card><h3 id=v>Vitals</h3>
-<label>Blood Pressure<input id=bp></label>
-<label>Heart Rate<input id=hr></label>
-<label>Temperature<input id=temp></label>
-<label>Blood Sugar<input id=glu></label></div>
-<div class=card><h3 id=m>Medications</h3><textarea id=med rows=6 placeholder="Medication list"></textarea></div>
-<div class=card><h3 id=a>Appointments</h3><textarea id=appt rows=6></textarea></div>
-<div class=card><h3 id=l>Lab Results</h3><textarea id=labs rows=6></textarea></div>
-<div class=card><h3 id=h>Medical History</h3><textarea id=hist rows=8></textarea></div>
-<div class=card><h3 id=j>Health Journal</h3><textarea id=journal rows=8></textarea></div>
-<div class=card><h3 id=e>Emergency Contact</h3><label>Name<input id=ec></label><label>Phone<input id=ep></label></div>
-</div></div>
+body{
+    margin:0;
+    font-family:Arial,Helvetica,sans-serif;
+    background:#f4f7fb;
+}
+
+header{
+    background:#1976d2;
+    color:white;
+    padding:20px;
+}
+
+.container{
+    width:95%;
+    max-width:1200px;
+    margin:auto;
+}
+
+select{
+    padding:8px;
+    border-radius:5px;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+    gap:20px;
+    margin-top:20px;
+}
+
+.card{
+    background:white;
+    border-radius:10px;
+    padding:20px;
+    box-shadow:0 3px 10px rgba(0,0,0,.1);
+}
+
+h2{
+    margin-top:0;
+    color:#1976d2;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+td{
+    padding:8px;
+    border-bottom:1px solid #ddd;
+}
+
+.value{
+    font-weight:bold;
+}
+
+footer{
+    margin-top:30px;
+    padding:20px;
+    text-align:center;
+    color:#666;
+}
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+<div class="container">
+
+<h1 id="title">Personal Electronic Medical Record</h1>
+
+<select onchange="changeLanguage(this.value)">
+<option value="en">English</option>
+<option value="zh">中文</option>
+<option value="es">Español</option>
+<option value="fr">Français</option>
+<option value="de">Deutsch</option>
+<option value="ja">日本語</option>
+<option value="ko">한국어</option>
+<option value="pt">Português</option>
+</select>
+
+</div>
+
+</header>
+
+<div class="container">
+
+<div class="grid">
+
+<div class="card">
+
+<h2 id="profileTitle">Patient Profile</h2>
+
+<table>
+
+<tr>
+<td id="nameLabel">Name</td>
+<td class="value">Joseph Eng</td>
+</tr>
+
+<tr>
+<td id="dobLabel">Date of Birth</td>
+<td class="value">July 10, 2009</td>
+</tr>
+
+<tr>
+<td id="ageLabel">Age</td>
+<td class="value">17</td>
+</tr>
+
+<tr>
+<td id="genderLabel">Gender</td>
+<td class="value" id="genderValue">Male</td>
+</tr>
+
+<tr>
+<td id="allergyLabel">Allergies</td>
+<td class="value" id="allergyValue">None</td>
+</tr>
+
+</table>
+
+</div>
+
+<div class="card">
+
+<h2 id="dashboardTitle">Health Dashboard</h2>
+
+<table>
+
+<tr>
+<td>Blood Pressure</td>
+<td class="value">--</td>
+</tr>
+
+<tr>
+<td>Heart Rate</td>
+<td class="value">--</td>
+</tr>
+
+<tr>
+<td>Weight</td>
+<td class="value">--</td>
+</tr>
+
+<tr>
+<td>Height</td>
+<td class="value">--</td>
+</tr>
+
+<tr>
+<td>BMI</td>
+<td class="value">--</td>
+</tr>
+
+</table>
+
+</div>
+
+<div class="card">
+
+<h2 id="medTitle">Current Medications</h2>
+
+<p id="medText">No medications recorded.</p>
+
+</div>
+
+<div class="card">
+
+<h2 id="apptTitle">Appointments</h2>
+
+<p id="apptText">No upcoming appointments.</p>
+
+</div>
+
+<div class="card">
+
+<h2 id="labTitle">Laboratory Results</h2>
+
+<p id="labText">No laboratory results available.</p>
+
+</div>
+
+<div class="card">
+
+<h2 id="historyTitle">Medical History</h2>
+
+<ul id="historyList">
+<li>No chronic conditions recorded.</li>
+<li>No previous surgeries.</li>
+<li>No hospital admissions.</li>
+</ul>
+
+</div>
+
+</div>
+
+</div>
+
+<footer>
+
+Personal EMR Demo © 2026
+
+</footer>
+
 <script>
-const tr={
-en:{t:"Personal EMR",p:"Patient Profile",v:"Vitals",m:"Medications",a:"Appointments",l:"Lab Results",h:"Medical History",j:"Health Journal",e:"Emergency Contact"},
-zh:{t:"个人电子病历",p:"患者资料",v:"生命体征",m:"药物",a:"预约",l:"化验结果",h:"病史",j:"健康日志",e:"紧急联系人"},
-es:{t:"Historia Clínica",p:"Perfil",v:"Signos Vitales",m:"Medicamentos",a:"Citas",l:"Laboratorio",h:"Historial",j:"Diario",e:"Emergencia"},
-fr:{t:"Dossier Médical",p:"Profil",v:"Constantes",m:"Médicaments",a:"Rendez-vous",l:"Analyses",h:"Historique",j:"Journal",e:"Urgence"},
-de:{t:"Patientenakte",p:"Profil",v:"Vitalwerte",m:"Medikamente",a:"Termine",l:"Labor",h:"Krankengeschichte",j:"Journal",e:"Notfall"},
-ja:{t:"電子カルテ",p:"患者情報",v:"バイタル",m:"薬",a:"予約",l:"検査結果",h:"病歴",j:"健康日誌",e:"緊急連絡先"},
-ko:{t:"전자의무기록",p:"환자정보",v:"활력징후",m:"약물",a:"예약",l:"검사결과",h:"병력",j:"건강일지",e:"비상연락처"},
-pt:{t:"Prontuário",p:"Perfil",v:"Sinais Vitais",m:"Medicamentos",a:"Consultas",l:"Laboratório",h:"Histórico",j:"Diário",e:"Emergência"}};
-function setLang(x){let o=tr[x];for(let k in o)document.getElementById(k).textContent=o[k]}
-function save(){document.querySelectorAll('input,textarea').forEach(i=>localStorage[i.id]=i.value);alert('Saved')}
-window.onload=()=>{document.querySelectorAll('input,textarea').forEach(i=>{if(localStorage[i.id])i.value=localStorage[i.id]})}
-</script></body></html>
+
+const languages = {
+
+en:{
+title:"Personal Electronic Medical Record",
+profile:"Patient Profile",
+name:"Name",
+dob:"Date of Birth",
+age:"Age",
+gender:"Gender",
+male:"Male",
+allergy:"Allergies",
+none:"None",
+dashboard:"Health Dashboard",
+med:"Current Medications",
+medText:"No medications recorded.",
+appt:"Appointments",
+apptText:"No upcoming appointments.",
+lab:"Laboratory Results",
+labText:"No laboratory results available.",
+history:"Medical History"
+},
+
+zh:{
+title:"个人电子病历",
+profile:"患者资料",
+name:"姓名",
+dob:"出生日期",
+age:"年龄",
+gender:"性别",
+male:"男",
+allergy:"过敏",
+none:"无",
+dashboard:"健康仪表板",
+med:"当前药物",
+medText:"暂无药物记录。",
+appt:"预约",
+apptText:"暂无预约。",
+lab:"化验结果",
+labText:"暂无化验结果。",
+history:"病史"
+},
+
+es:{
+title:"Historia Clínica Electrónica",
+profile:"Perfil del Paciente",
+name:"Nombre",
+dob:"Fecha de nacimiento",
+age:"Edad",
+gender:"Género",
+male:"Masculino",
+allergy:"Alergias",
+none:"Ninguna",
+dashboard:"Panel de Salud",
+med:"Medicamentos",
+medText:"No hay medicamentos registrados.",
+appt:"Citas",
+apptText:"No hay citas próximas.",
+lab:"Resultados de Laboratorio",
+labText:"No hay resultados disponibles.",
+history:"Historial Médico"
+},
+
+fr:{
+title:"Dossier Médical Électronique",
+profile:"Profil du Patient",
+name:"Nom",
+dob:"Date de naissance",
+age:"Âge",
+gender:"Sexe",
+male:"Homme",
+allergy:"Allergies",
+none:"Aucune",
+dashboard:"Tableau de Santé",
+med:"Médicaments",
+medText:"Aucun médicament enregistré.",
+appt:"Rendez-vous",
+apptText:"Aucun rendez-vous prévu.",
+lab:"Résultats de Laboratoire",
+labText:"Aucun résultat disponible.",
+history:"Historique Médical"
+},
+
+de:{
+title:"Elektronische Patientenakte",
+profile:"Patientenprofil",
+name:"Name",
+dob:"Geburtsdatum",
+age:"Alter",
+gender:"Geschlecht",
+male:"Männlich",
+allergy:"Allergien",
+none:"Keine",
+dashboard:"Gesundheitsübersicht",
+med:"Medikamente",
+medText:"Keine Medikamente vorhanden.",
+appt:"Termine",
+apptText:"Keine Termine geplant.",
+lab:"Laborergebnisse",
+labText:"Keine Laborergebnisse verfügbar.",
+history:"Krankengeschichte"
+},
+
+ja:{
+title:"個人電子カルテ",
+profile:"患者プロフィール",
+name:"氏名",
+dob:"生年月日",
+age:"年齢",
+gender:"性別",
+male:"男性",
+allergy:"アレルギー",
+none:"なし",
+dashboard:"健康ダッシュボード",
+med:"服用中の薬",
+medText:"薬の記録はありません。",
+appt:"予約",
+apptText:"予約はありません。",
+lab:"検査結果",
+labText:"検査結果はありません。",
+history:"病歴"
+},
+
+ko:{
+title:"개인 전자의무기록",
+profile:"환자 정보",
+name:"이름",
+dob:"생년월일",
+age:"나이",
+gender:"성별",
+male:"남성",
+allergy:"알레르기",
+none:"없음",
+dashboard:"건강 대시보드",
+med:"현재 복용 약",
+medText:"등록된 약이 없습니다.",
+appt:"예약",
+apptText:"예정된 예약이 없습니다.",
+lab:"검사 결과",
+labText:"검사 결과가 없습니다.",
+history:"병력"
+},
+
+pt:{
+title:"Prontuário Eletrônico Pessoal",
+profile:"Perfil do Paciente",
+name:"Nome",
+dob:"Data de nascimento",
+age:"Idade",
+gender:"Gênero",
+male:"Masculino",
+allergy:"Alergias",
+none:"Nenhuma",
+dashboard:"Painel de Saúde",
+med:"Medicamentos",
+medText:"Nenhum medicamento registrado.",
+appt:"Consultas",
+apptText:"Nenhuma consulta agendada.",
+lab:"Resultados Laboratoriais",
+labText:"Nenhum resultado disponível.",
+history:"Histórico Médico"
+}
+
+};
+
+function changeLanguage(lang){
+
+let t=languages[lang];
+
+document.getElementById("title").innerHTML=t.title;
+document.getElementById("profileTitle").innerHTML=t.profile;
+document.getElementById("nameLabel").innerHTML=t.name;
+document.getElementById("dobLabel").innerHTML=t.dob;
+document.getElementById("ageLabel").innerHTML=t.age;
+document.getElementById("genderLabel").innerHTML=t.gender;
+document.getElementById("genderValue").innerHTML=t.male;
+document.getElementById("allergyLabel").innerHTML=t.allergy;
+document.getElementById("allergyValue").innerHTML=t.none;
+document.getElementById("dashboardTitle").innerHTML=t.dashboard;
+document.getElementById("medTitle").innerHTML=t.med;
+document.getElementById("medText").innerHTML=t.medText;
+document.getElementById("apptTitle").innerHTML=t.appt;
+document.getElementById("apptText").innerHTML=t.apptText;
+document.getElementById("labTitle").innerHTML=t.lab;
+document.getElementById("labText").innerHTML=t.labText;
+document.getElementById("historyTitle").innerHTML=t.history;
+
+}
+
+</script>
+
+</body>
+</html>
