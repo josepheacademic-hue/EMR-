@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Personal EMR</title>
+<style>
+body{font-family:Arial;margin:0;background:#eef}header{background:#1565c0;color:#fff;padding:12px}
+.container{max-width:1100px;margin:auto;padding:16px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px}
+.card{background:#fff;border-radius:10px;padding:14px;box-shadow:0 2px 6px #0002}
+.dark{background:#111;color:#eee}.dark .card{background:#222}.btn{padding:8px}
+input,textarea,select{width:100%;padding:6px}
+</style></head><body>
+<header><div class="container"><h2 id=t>Personal EMR</h2>
+<select id=lang onchange="setLang(this.value)"><option>en</option><option>zh</option><option>es</option><option>fr</option><option>de</option><option>ja</option><option>ko</option><option>pt</option></select>
+<button class=btn onclick="document.body.classList.toggle('dark')">🌙</button></div></header>
+<div class=container><div class=grid>
+<div class=card><h3 id=p>Patient Profile</h3>
+<label>Name<input id=name value="Joseph Eng"></label>
+<label>DOB<input id=dob value="2009-07-10"></label>
+<label>Age<input id=age value="17"></label>
+<label>Gender<input id=gender value="Male"></label>
+<label>Allergies<input id=allergy value="None"></label>
+<label>Blood Type<input id=blood placeholder="O+"></label>
+<label>Height<input id=height placeholder="cm"></label>
+<label>Weight<input id=weight placeholder="kg"></label>
+<button onclick="save()">Save</button></div>
+<div class=card><h3 id=v>Vitals</h3>
+<label>Blood Pressure<input id=bp></label>
+<label>Heart Rate<input id=hr></label>
+<label>Temperature<input id=temp></label>
+<label>Blood Sugar<input id=glu></label></div>
+<div class=card><h3 id=m>Medications</h3><textarea id=med rows=6 placeholder="Medication list"></textarea></div>
+<div class=card><h3 id=a>Appointments</h3><textarea id=appt rows=6></textarea></div>
+<div class=card><h3 id=l>Lab Results</h3><textarea id=labs rows=6></textarea></div>
+<div class=card><h3 id=h>Medical History</h3><textarea id=hist rows=8></textarea></div>
+<div class=card><h3 id=j>Health Journal</h3><textarea id=journal rows=8></textarea></div>
+<div class=card><h3 id=e>Emergency Contact</h3><label>Name<input id=ec></label><label>Phone<input id=ep></label></div>
+</div></div>
+<script>
+const tr={
+en:{t:"Personal EMR",p:"Patient Profile",v:"Vitals",m:"Medications",a:"Appointments",l:"Lab Results",h:"Medical History",j:"Health Journal",e:"Emergency Contact"},
+zh:{t:"个人电子病历",p:"患者资料",v:"生命体征",m:"药物",a:"预约",l:"化验结果",h:"病史",j:"健康日志",e:"紧急联系人"},
+es:{t:"Historia Clínica",p:"Perfil",v:"Signos Vitales",m:"Medicamentos",a:"Citas",l:"Laboratorio",h:"Historial",j:"Diario",e:"Emergencia"},
+fr:{t:"Dossier Médical",p:"Profil",v:"Constantes",m:"Médicaments",a:"Rendez-vous",l:"Analyses",h:"Historique",j:"Journal",e:"Urgence"},
+de:{t:"Patientenakte",p:"Profil",v:"Vitalwerte",m:"Medikamente",a:"Termine",l:"Labor",h:"Krankengeschichte",j:"Journal",e:"Notfall"},
+ja:{t:"電子カルテ",p:"患者情報",v:"バイタル",m:"薬",a:"予約",l:"検査結果",h:"病歴",j:"健康日誌",e:"緊急連絡先"},
+ko:{t:"전자의무기록",p:"환자정보",v:"활력징후",m:"약물",a:"예약",l:"검사결과",h:"병력",j:"건강일지",e:"비상연락처"},
+pt:{t:"Prontuário",p:"Perfil",v:"Sinais Vitais",m:"Medicamentos",a:"Consultas",l:"Laboratório",h:"Histórico",j:"Diário",e:"Emergência"}};
+function setLang(x){let o=tr[x];for(let k in o)document.getElementById(k).textContent=o[k]}
+function save(){document.querySelectorAll('input,textarea').forEach(i=>localStorage[i.id]=i.value);alert('Saved')}
+window.onload=()=>{document.querySelectorAll('input,textarea').forEach(i=>{if(localStorage[i.id])i.value=localStorage[i.id]})}
+</script></body></html>
